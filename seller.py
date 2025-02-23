@@ -79,7 +79,7 @@ def update_price(prices: list, client_id, seller_token):
         seller_token (str): seller token.
 
     Returns:
-        list: data.
+        list: prices.
 
     """
     url = "https://api-seller.ozon.ru/v1/product/import/prices"
@@ -102,7 +102,7 @@ def update_stocks(stocks: list, client_id, seller_token):
         seller_token (str): seller token.
 
     Returns:
-        list: data.
+        list: stocks.
 
     """
     url = "https://api-seller.ozon.ru/v1/product/import/stocks"
@@ -150,7 +150,7 @@ def create_stocks(watch_remnants, offer_ids):
         offer_ids (list): product codes.
 
     Returns:
-        List of products available in stock.
+        list: stocks
 
     """
     # Уберем то, что не загружено в seller
@@ -180,7 +180,7 @@ def create_prices(watch_remnants, offer_ids):
             offer_ids (list): product codes.
 
         Returns:
-            List of prices for goods.
+            list: prices.
 
         """
 
