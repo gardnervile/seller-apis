@@ -11,6 +11,17 @@ logger = logging.getLogger(__file__)
 
 
 def get_product_list(page, campaign_id, access_token):
+    """Получить список товаров
+
+        Args:
+            page (str): undefined.
+            campaign_id (str): campaign id.
+            access_token (str): access token.
+
+        Returns:
+            list: products.
+
+    """
     endpoint_url = "https://api.partner.market.yandex.ru/"
     headers = {
         "Content-Type": "application/json",
@@ -30,6 +41,17 @@ def get_product_list(page, campaign_id, access_token):
 
 
 def update_stocks(stocks, campaign_id, access_token):
+    """Получить список наличия
+
+        Args:
+            stocks (list): stocks.
+            campaign_id (str): campaign id.
+            access_token (str): access token.
+
+        Returns:
+            list: updated stocks.
+
+    """
     endpoint_url = "https://api.partner.market.yandex.ru/"
     headers = {
         "Content-Type": "application/json",
@@ -46,6 +68,17 @@ def update_stocks(stocks, campaign_id, access_token):
 
 
 def update_price(prices, campaign_id, access_token):
+    """Обновить цены на товары
+
+        Args:
+            prices (list): prices.
+            campaign_id (str): campaign id.
+            access_token (str): access token.
+
+        Returns:
+            list: prices.
+
+    """
     endpoint_url = "https://api.partner.market.yandex.ru/"
     headers = {
         "Content-Type": "application/json",
@@ -62,7 +95,16 @@ def update_price(prices, campaign_id, access_token):
 
 
 def get_offer_ids(campaign_id, market_token):
-    """Получить артикулы товаров Яндекс маркета"""
+    """Получить артикулы товаров Яндекс маркета
+
+        Args:
+            campaign_id (str): campaign id.
+            access_token (str): access token.
+
+        Returns:
+           list: offer ids.
+
+    """
     page = ""
     product_list = []
     while True:
@@ -78,6 +120,17 @@ def get_offer_ids(campaign_id, market_token):
 
 
 def create_stocks(watch_remnants, offer_ids, warehouse_id):
+    """Получить актуальное наличие.
+
+        Args:
+            watch_remnants (list): watch remnants.
+            offer_ids (list): offer ids.
+            warehouse_id (str): warehouse id.
+
+        Returns:
+           list: stocks.
+
+    """
     # Уберем то, что не загружено в market
     stocks = list()
     date = str(datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z")
@@ -123,6 +176,16 @@ def create_stocks(watch_remnants, offer_ids, warehouse_id):
 
 
 def create_prices(watch_remnants, offer_ids):
+    """Получить цены.
+
+        Args:
+            watch_remnants (list): watch remnants.
+            offer_ids (list): offer ids.
+
+        Returns:
+           list: prices.
+
+    """
     prices = []
     for watch in watch_remnants:
         if str(watch.get("Код")) in offer_ids:
@@ -143,6 +206,17 @@ def create_prices(watch_remnants, offer_ids):
 
 
 async def upload_prices(watch_remnants, campaign_id, market_token):
+    """Разбить список цен
+
+        Args:
+            watch_remnants (list): list product.
+            campaign_id (str): campaign id.
+            access_token (str): access token.
+
+        Returns:
+            list: prices.
+
+    """
     offer_ids = get_offer_ids(campaign_id, market_token)
     prices = create_prices(watch_remnants, offer_ids)
     for some_prices in list(divide(prices, 500)):
